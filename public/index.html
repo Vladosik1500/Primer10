@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>React</title>
+    <script src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/babel">
+      class DisplayNumber extends React.Component {
+        render() {
+          var style = {
+            fontSize: "30px",
+            fontFamily: "sans-serif",
+            color: "#FFFFFF",
+            fontWeight: "bold",
+            marginBottom: "20px"
+          };
+          return <div style={style}>{this.props.number}</div>;
+        }
+      }
+
+      class CounterWrapper extends React.Component {
+        constructor(props) {
+          super(props);
+
+          // задаем значения по умолчанию для состояния компонента
+          console.log("Момент для состояния по умолчанию!");
+
+          this.state = {
+            counter: 0
+          };
+
+          this.increase = this.increase.bind(this);
+        }
+
+        increase(e) {
+          this.setState({
+            counter: this.state.counter + 1
+          });
+        }
+
+        componentWillUpdate(newProps, newState) {
+          console.log("componentWillUpdate: Компонент будет обновлен!");
+        }
+
+        componentDidUpdate(currentProps, currentState) {
+          console.log("componentDidUpdate: Компонент был обновлен!");
+        }
+
+        componentWillMount() {
+          console.log("componentWillMount: Компонент будет добавлен в DOM!");
+        }
+
+        componentDidMount() {
+          console.log("componentDidMount: Компонент был добавлен в DOM!");
+        }
+
+        componentWillUnmount() {
+          console.log("componentWillUnmount: Компонент будет удален из DOM!");
+        }
+
+        shouldComponentUpdate(newProps, newState) {
+          console.log("shouldComponentUpdate: Компонент должен быть обновлен?");
+          if (newState.counter < 5) {
+            console.log(
+              "shouldComponentUpdate: Да, компонент должен быть обновлен!"
+            );
+            return true;
+          } else {
+            console.log(
+              "shouldComponentUpdate: Нет, компонент пропускает обновление!"
+            );
+            return false;
+          }
+        }
+
+        componentWillReceiveProps(newProps) {
+          console.log(
+            "componentWillReceiveProps: Компонент сейчас получит новые свойства!"
+          );
+        }
+
+        render() {
+          var style = {
+            width: "300px",
+            textAlign: "center",
+            backgroundColor: "#777777",
+            padding: "20px",
+            fontFamily: "sans-serif",
+            color: "#FFFFFF",
+            borderRadius: "10px"
+          };
+          return (
+            <div style={style}>
+              <p>{this.props.title}</p>
+              <DisplayNumber number={this.state.counter} />
+              <button onClick={this.increase}>Увеличить</button>
+            </div>
+          );
+        }
+      }
+
+      // задаем значения по умолчанию для свойств компонента
+      console.log("defaultProps: Момент для свойств по умолчанию!");
+      CounterWrapper.defaultProps = {
+        title: "Количество нажатий на кнопку"
+      };
+
+      ReactDOM.render(<CounterWrapper />, document.querySelector("#container"));
+    </script>
+  </body>
+</html>
